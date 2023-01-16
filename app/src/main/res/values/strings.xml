@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">yolov5-tflite</string>
+
+    <string-array name="model">
+        <item>yolov5n_fp16</item>
+        <item>yolov5n_int8</item>
+    </string-array>
+    <string-array name="backend">
+        <item>cpu</item>
+        <item>gpu</item>
+        <item>nnmpi</item>
+    </string-array>
+
+</resources>
