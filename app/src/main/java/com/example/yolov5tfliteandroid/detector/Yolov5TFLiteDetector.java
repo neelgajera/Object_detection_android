@@ -173,18 +173,18 @@ public class Yolov5TFLiteDetector {
             int xmax = (int) Math.min(INPNUT_SIZE.getWidth(), x + w / 2.);
             int ymax = (int) Math.min(INPNUT_SIZE.getHeight(), y + h / 2.);
             float confidence = recognitionArray[4 + gridStride];
-            float[] classScores = Arrays.copyOfRange(recognitionArray, 5 + gridStride, this.OUTPUT_SIZE[2] + gridStride);
+//            float[] classScores = Arrays.copyOfRange(recognitionArray, 5 + gridStride, this.OUTPUT_SIZE[2] + gridStride);
 //            if(i % 1000 == 0){
 //                Log.i("tfliteSupport","x,y,w,h,conf:"+x+","+y+","+w+","+h+","+confidence);
 //            }
             int labelId = 0;
-            float maxLabelScores = 0.f;
-            for (int j = 0; j < classScores.length; j++) {
-                if (classScores[j] > maxLabelScores) {
-                    maxLabelScores = classScores[j];
-                    labelId = j;
-                }
-            }
+            float maxLabelScores = w*h;
+//            for (int j = 0; j < classScores.length; j++) {
+//                if (classScores[j] > maxLabelScores) {
+//                    maxLabelScores = classScores[j];
+//                    labelId = j;
+//                }
+//            }
 
 
             Recognition r = new Recognition(
@@ -274,7 +274,8 @@ public class Yolov5TFLiteDetector {
                             @Override
                             public int compare(final Recognition l, final Recognition r) {
                                 // Intentionally reversed to put high confidence at the head of the queue.
-                                return Float.compare(r.getConfidence(), l.getConfidence());
+                                return Float.compare(r.getLabelScore(), l.getLabelScore());
+
                             }
                         });
 
@@ -292,12 +293,12 @@ public class Yolov5TFLiteDetector {
             nmsRecognitions.add(max);
             pq.clear();
 
-            for (int k = 1; k < detections.length; k++) {
-                Recognition detection = detections[k];
-                if (boxIou(max.getLocation(), detection.getLocation()) < IOU_CLASS_DUPLICATED_THRESHOLD) {
-                    pq.add(detection);
-                }
-            }
+//            for (int k = 1; k < detections.length; k++) {
+//                Recognition detection = detections[k];
+//                if (boxIou(max.getLocation(), detection.getLocation()) < IOU_CLASS_DUPLICATED_THRESHOLD) {
+//                    pq.add(detection);
+//                }
+//            }
         }
         return nmsRecognitions;
     }
